@@ -1,60 +1,32 @@
 #include <stdio.h>
 
 int main(){
-    int month;
-    scanf("%d",&month);
+    char user;
+    int pass;
 
-    switch(month){
+    scanf("%c %i", &user, &pass);
 
-        case 1:
-        printf("Janeiro");
-        break;
-        
-        case 2:
-        printf("Fevereiro");
-        break;
-        
-        case 3:
-        printf("Marco");
-        break;
-        
-        case 4:
-        printf("Abril");
-        break;
-        
-        case 5:
-        printf("Maio");
-        break;
-        
-        case 6:
-        printf("Junho");
-        break;
-        
-        case 7:
-        printf("Julho");
-        break;
-        
-        case 8:
-        printf("Agosto");
-        break;
-        
-        case 9:
-        printf("Setembro");
-        break;
-        
-        case 10:
-        printf("Outubro");
-        break;
-        
-        case 11:
-        printf("Novembro");
-        break;
-        
-        case 12:
-        printf("Dezembro");
+    switch (user)
+    {
+    case 'A':
+    case 'D':
+        if(pass == 555){
+            printf("Acesso ADMIN");
+        }else{
+            printf("Acesso NEGADO");
+        }
         break;
 
-        default:
-        printf("Mes invalido");
+    case 'U':
+        if(pass == 123){
+            printf("Acesso USER");
+        } else{
+            printf("Acesso NEGADO");
+        }
+        break;
+    
+    default:
+        printf("Acesso NEGADO");
+        break;
     }
 }

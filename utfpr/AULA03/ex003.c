@@ -1,40 +1,42 @@
 #include <stdio.h>
 
 int main(){
-    char grade;
+    int number;
 
-    scanf("%c", &grade);
+    scanf("%d", &number);
 
-    switch (grade)
+    switch (number)
     {
-    
-    case 'a':
-    case 'A':
-        printf("Excelente! Parabens!");
+    case 1:
+        printf("Domingo");
         break;
     
-    case 'b':
-    case 'B':
-        printf("Voce foi bem.");
+    case 2:
+        printf("Segunda-feira");
         break;
     
-    case 'c':
-    case 'C':
-        printf("Voce foi bem.");
+    case 3:
+        printf("Terca-feira");
         break;
     
-    case 'd':
-    case 'D':
-        printf("Foi por muito pouco!");
+    case 4:
+        printf("Quarta-feira");
         break;
     
-    case 'f':
-    case 'F':
-        printf("Estudar mais na proxima.");
+    case 5:
+        printf("Quinta-feira");
+        break;
+    
+    case 6:
+        printf("Sexta-feira");
+        break;
+    
+    case 7:
+        printf("Sabado");
         break;
     
     default:
-        printf("Valor invalido.");
+        printf("Dia da semana invalido!");
         break;
     }
 }
