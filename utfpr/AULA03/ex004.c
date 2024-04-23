@@ -1,16 +1,46 @@
 #include <stdio.h>
 
 int main(){
-    int h2o;
-    float tarifah2o, tarifaesg, tributosf, h2oesg, total;
+    int ddd;
 
-    scanf("%d %f %f %f", &h2o, &tarifah2o, &tarifaesg, &tributosf);
+    scanf("%d",&ddd);
 
-    tarifah2o = h2o*tarifah2o;
-    tarifaesg= tarifah2o*tarifaesg/100;
-    h2oesg = tarifah2o+tarifaesg;
-    tributosf = h2oesg*tributosf/100;
-    total= h2oesg+tributosf;
-
-    printf("Total Agua: %.2f\nTotal Esgoto: %.2f\nTotal: %.2f\nTributos Federais: %.2f\nVALOR DA FATURA: %.2f", tarifah2o, tarifaesg, h2oesg, tributosf, total);
+    switch (ddd)
+    {
+        case 61:
+            printf("Brasilia");
+            break;
+        
+        case 71:
+            printf("Salvador");
+            break;
+        
+        case 11:
+            printf("Sao Paulo");
+            break;
+        
+        case 21:
+            printf("Rio de Janeiro");
+            break;
+        
+        case 32:
+            printf("Juiz de Fora");
+            break;
+        
+        case 19:
+            printf("Campinas");
+            break;
+        
+        case 27:
+            printf("Vitoria");
+            break;
+        
+        case 31:
+            printf("Belo Horizonte");
+            break;
+        
+        default:
+            printf("DDD nao cadastrado");
+            break;
+    }
 }

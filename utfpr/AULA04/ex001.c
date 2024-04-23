@@ -9,7 +9,7 @@ int main(){
     switch (user)
     {
     case 'A':
-    case 'U':
+    case 'D':
         if(pass == 555){
             printf("Acesso ADMIN");
         }else{
@@ -26,7 +26,7 @@ int main(){
         break;
     
     default:
-        printf("Acesso NEGADO")
+        printf("Acesso NEGADO");
         break;
     }
 }
