@@ -7,10 +7,8 @@ int main(){
     int v[n];
 
     for(int i=0; i<n; i++){
-        int value;
-        scanf("%d", &value);
-        v[i] = value;
-        soma+= value;
+        scanf("%d", &v[i]);
+        soma+= v[i];
     }
 
     float media = (float)soma/(float)n;

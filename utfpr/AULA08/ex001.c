@@ -6,15 +6,11 @@ int main(){
     int v1[N], v2[N], contador=0;
 
     for(int i=0; i<N; i++){
-        int value;
-        scanf("%d", &value);
-        v1[i] = value;
+        scanf("%d", &v1[i]);
     }
 
     for(int i=0; i<N; i++){
-        int value;
-        scanf("%d", &value);
-        v2[i] = value;
+        scanf("%d", &v2[i]);
     }
 
     for(int i=0; i<N; i++){

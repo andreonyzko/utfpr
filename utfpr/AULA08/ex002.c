@@ -8,15 +8,11 @@ int main(){
     int v2[n];
 
     for(int i=0; i<n; i++){
-        float value;
-        scanf("%f", &value);
-        v1[i]= value;
+        scanf("%f", &v1[i]);
     }
 
     for(int i=0; i<n; i++){
-        int value;
-        scanf("%d", &value);
-        v2[i] = value;
+        scanf("%d", &v2[i]);
     }
 
     for(int i=0; i<n; i++){
