@@ -1,22 +1,17 @@
 #include <stdio.h>
 
 int main(){
-    int n, soma=0;
+    int n;
     scanf("%d", &n);
-
-    int v[n];
-
-    for(int i=0; i<n; i++){
-        scanf("%d", &v[i]);
-        soma+= v[i];
-    }
-
-    float media = (float)soma/(float)n;
-    printf("Valores abaixo da média (%.2f):\n", media);
+    int stringint[n];
+    char stringchar[n+1];
 
     for(int i=0; i<n; i++){
-        if(v[i] < media){
-            printf("V[%d]:%d\n", i, v[i]);
-        }
+        scanf("%d", &stringint[i]);
     }
+    for(int i=0; i<n; i++){
+        stringchar[i] = (char)stringint[i];
+    }
+    stringchar[n] = '\0';
+    printf("%s", stringchar);
 }
