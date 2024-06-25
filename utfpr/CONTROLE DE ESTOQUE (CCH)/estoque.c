@@ -14,15 +14,16 @@ int main(){
         int choice;
         printf("\n\n=-=-=-=-=-=- MENU -=-=-=-=-=-=-=\n");
         printf("\n1- Adicionar novo produto.");
-        printf("\n2- Consultar informacoes do produto.");
-        printf("\n3- Registrar venda.");
-        printf("\n4- Exibir relatorio do estoque.");
-        printf("\n5- Sair.");
+        printf("\n2- Gerenciar estoque de um produto.");
+        printf("\n3- Consultar informacoes do produto.");
+        printf("\n4- Registrar venda.");
+        printf("\n5- Exibir relatorio do estoque.");
+        printf("\n6- Sair.");
         printf("\n\nEscolha: ");
         scanf("%d", &choice);
         printf("\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
 
-        if (choice == 5){
+        if (choice == 6){
             break;
         }
 
@@ -69,7 +70,35 @@ int main(){
             printf("\nProduto adicionado com sucesso.");
             qnt_produtos++;
             break;
+
         case 2:
+            if(qnt_produtos == 0){
+                printf("\nNao ha produtos cadastrados ainda.");
+                break;
+            }
+
+            printf("\nGerenciar estoque");
+            printf("\n-------------------------------");
+            int searchcod_estoque;
+            printf("\nCodigo do produto: ");
+            scanf("%d", &searchcod_estoque);
+            char searchreturn_estoque= 'F';
+            for (int i=0; i<qnt_produtos; i++){
+                if (cod[i] == searchcod_estoque){
+                    searchreturn_estoque = 'T';
+                    printf("Quantidade: ");
+                    int qnt_add_estoque;
+                    scanf("%d", &qnt_add_estoque);
+                    quantidade[i] += qnt_add_estoque;
+                    printf("\nEstoque de \"%s\" alterado.", produto[i]);
+                    break;
+                }
+            }
+            if(searchreturn_estoque== 'F'){
+                printf("\nNenhum produto encontrado com este codigo.");
+            }
+            break;
+        case 3:
 
             if(qnt_produtos == 0){
                 printf("\nNao ha produtos cadastrados ainda.");
@@ -96,7 +125,7 @@ int main(){
 
             break;
 
-        case 3:
+        case 4:
             if(qnt_produtos == 0){
                 printf("\nNao ha produtos cadastrados ainda.");
                 break;
@@ -125,7 +154,7 @@ int main(){
             for (int i=0; i<qnt_produtos; i++){
                 if (cod[i] == searchcodsell){
                     if (quantidade[i] < qntd_vendida){
-                        printf("So ha %d unidades no estoque!", quantidade[i]);
+                        printf("\nSo ha %d unidades no estoque!", quantidade[i]);
                     }
                     else{
                         quantidade[i] -= qntd_vendida;
@@ -137,7 +166,7 @@ int main(){
 
             break;
 
-        case 4:
+        case 5:
             if(qnt_produtos == 0){
                 printf("\nNao ha produtos cadastrados ainda.");
                 break;
