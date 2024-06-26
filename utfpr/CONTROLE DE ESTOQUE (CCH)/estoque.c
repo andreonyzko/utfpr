@@ -33,7 +33,7 @@ int main(){
             printf("\nAdicionar produto");
             printf("\n-------------------------------");
 
-            printf("Codigo do produto: ");
+            printf("\nCodigo do produto: ");
             int cod_add;
             scanf(" %d", &cod_add);
             if(qnt_produtos == 0){ // Verifica se é o primeiro produto sendo cadastrado.
@@ -57,7 +57,7 @@ int main(){
                 }
             }
 
-            printf("\nNome do produto: ");
+            printf("Nome do produto: ");
             scanf(" %[^\n]s", &produto[qnt_produtos]);
 
             printf("Preco do produto: ");
