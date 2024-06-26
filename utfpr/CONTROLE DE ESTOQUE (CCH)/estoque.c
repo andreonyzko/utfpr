@@ -136,9 +136,11 @@ int main(){
             printf("\nCodigo do produto: ");
             scanf("%d", &searchcodsell);
             int searchreturn_sell= 'F';
+            int indiceproduto=-1;
             for(int i=0; i<qnt_produtos; i++){ // Varre o vetor de codigos.
                 if(cod[i] == searchcodsell){ // Verifica a existencia o produto com o codigo informado.
                     searchreturn_sell = 'T';
+                    indiceproduto= i;
                 }
             }
             if(searchreturn_sell == 'F'){ // Retorna mensagem de erro se nao foi encontrado, e da break.
@@ -149,17 +151,13 @@ int main(){
             int qntd_vendida;
             printf("Quantidade do produto: ");
             scanf("%d", &qntd_vendida);
-            for (int i=0; i<qnt_produtos; i++){ // varre o vetor de codigos.
-                if (cod[i] == searchcodsell){ // acha o indice do produto com o codigo informado.
-                    if (quantidade[i] < qntd_vendida){ // Verifica a quantidade no estoque.
-                        printf("\nSo ha %d unidades no estoque!", quantidade[i]);
-                    }
-                    else{ // Faz a venda se houver a quantidade necessaria no estoque, e desconta do estoque.
-                        quantidade[i] -= qntd_vendida;
-                        printf("\nVenda realizada!");
-                        break;
-                    }
-                }
+
+            if (quantidade[indiceproduto] < qntd_vendida){ // Verifica a quantidade no estoque.
+                printf("\nSo ha %d unidades no estoque!", quantidade[indiceproduto]);
+            }
+            else{ // Faz a venda se houver a quantidade necessaria no estoque, e desconta do estoque.
+                quantidade[indiceproduto] -= qntd_vendida;
+                printf("\nVenda realizada!");
             }
 
             break;
