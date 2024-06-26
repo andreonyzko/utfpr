@@ -23,43 +23,42 @@ int main(){
         scanf("%d", &choice);
         printf("\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
 
-        if (choice == 6){
+        if (choice == 6){ // Verifica se o usuario deseja sair do programa, entao da um break
             break;
         }
 
-        switch (choice)
+        switch (choice) // Verifica a escolha do usuario
         {
-        case 1:
+        case 1: // Escolha 1: Adicionar produto
             printf("\nAdicionar produto");
             printf("\n-------------------------------");
-
-            printf("\nNome do produto: ");
-            scanf(" %[^\n]s", &produto[qnt_produtos]);
 
             printf("Codigo do produto: ");
             int cod_add;
             scanf(" %d", &cod_add);
-            if(qnt_produtos == 0){
+            if(qnt_produtos == 0){ // Verifica se é o primeiro produto sendo cadastrado.
                 cod[qnt_produtos] = cod_add;
             }
-            else{
+            else{ // Se nao for o primeiro produto cadastrado, verifica se o codigo inserido ja esta em uso.
                 char searchreturn_add = 'F';
-                for (int i=0; i<qnt_produtos; i++){
+                for (int i=0; i<qnt_produtos; i++){ // Vare o vetor em busca do codigo similar ao informado.
                     if (cod[i] == cod_add){
-                        printf("\nEste codigo ja foi cadastrado anteriormente.");
                         searchreturn_add = 'T';
                         break;
                     }
                 }
 
-                if(searchreturn_add == 'T'){
-                    searchreturn_add = 'F';
+                if(searchreturn_add == 'T'){ // Se a ja existencia do codigo for T (True), ele exibe a mensagem de erro break.
+                    printf("\nEste codigo ja foi cadastrado anteriormente.");
                     break;
                 }
-                else{
+                else{ // Se nao houver a ja existencia do codigo, ele adiciona e continua o cadastrado.
                     cod[qnt_produtos] = cod_add;
                 }
             }
+
+            printf("\nNome do produto: ");
+            scanf(" %[^\n]s", &produto[qnt_produtos]);
 
             printf("Preco do produto: ");
             scanf(" %f", &price[qnt_produtos]);
@@ -71,8 +70,8 @@ int main(){
             qnt_produtos++;
             break;
 
-        case 2:
-            if(qnt_produtos == 0){
+        case 2: // Escolha 2: Gerenciar estoque
+            if(qnt_produtos == 0){ // Verifica se há produtos cadastrados.
                 printf("\nNao ha produtos cadastrados ainda.");
                 break;
             }
@@ -83,8 +82,8 @@ int main(){
             printf("\nCodigo do produto: ");
             scanf("%d", &searchcod_estoque);
             char searchreturn_estoque= 'F';
-            for (int i=0; i<qnt_produtos; i++){
-                if (cod[i] == searchcod_estoque){
+            for (int i=0; i<qnt_produtos; i++){  // Varre o vetor de codigos.
+                if (cod[i] == searchcod_estoque){ // Acha o produto com o referido código.
                     searchreturn_estoque = 'T';
                     printf("Quantidade: ");
                     int qnt_add_estoque;
@@ -94,13 +93,13 @@ int main(){
                     break;
                 }
             }
-            if(searchreturn_estoque== 'F'){
+            if(searchreturn_estoque== 'F'){ // Da mensagem de erro se nao achou nenhum produto com o codigo.
                 printf("\nNenhum produto encontrado com este codigo.");
             }
             break;
-        case 3:
 
-            if(qnt_produtos == 0){
+        case 3: // Escolha 3: Consultar produto
+            if(qnt_produtos == 0){ // Verifica se a algum produto cadastrado.
                 printf("\nNao ha produtos cadastrados ainda.");
                 break;
             }
@@ -112,21 +111,20 @@ int main(){
             printf("\nCodigo do produto: ");
             scanf("%d", &searchcod);
             char searchreturn_consult= 'F';
-            for (int i=0; i<qnt_produtos; i++){
-                if (cod[i] == searchcod){
+            for (int i=0; i<qnt_produtos; i++){ // Varre o vetor de codigos.
+                if (cod[i] == searchcod){ // Acha o produto com o codigo informado.
                     printf("\n%s\nCodigo: %d\nPreco: R$%.2f\nEstoque: %d", produto[i], cod[i], price[i], quantidade[i]);
                     searchreturn_consult = 'T';
                     break;
                 }
             }
-            if(searchreturn_consult== 'F'){
+            if(searchreturn_consult== 'F'){ // Retorna mensagem de erro se o produto nao foi encontrado.
                 printf("\nNenhum produto encontrado com este codigo.");
             }
-
             break;
 
-        case 4:
-            if(qnt_produtos == 0){
+        case 4: // Escolha 4: Registrar venda
+            if(qnt_produtos == 0){ // Verifica se ha algum produto cadastrado.
                 printf("\nNao ha produtos cadastrados ainda.");
                 break;
             }
@@ -138,12 +136,12 @@ int main(){
             printf("\nCodigo do produto: ");
             scanf("%d", &searchcodsell);
             int searchreturn_sell= 'F';
-            for(int i=0; i<qnt_produtos; i++){
-                if(cod[i] == searchcodsell){
+            for(int i=0; i<qnt_produtos; i++){ // Varre o vetor de codigos.
+                if(cod[i] == searchcodsell){ // Verifica a existencia o produto com o codigo informado.
                     searchreturn_sell = 'T';
                 }
             }
-            if(searchreturn_sell == 'F'){
+            if(searchreturn_sell == 'F'){ // Retorna mensagem de erro se nao foi encontrado, e da break.
                 printf("\nNenhum produto encontrado com este codigo.");
                 break;
             }
@@ -151,12 +149,12 @@ int main(){
             int qntd_vendida;
             printf("Quantidade do produto: ");
             scanf("%d", &qntd_vendida);
-            for (int i=0; i<qnt_produtos; i++){
-                if (cod[i] == searchcodsell){
-                    if (quantidade[i] < qntd_vendida){
+            for (int i=0; i<qnt_produtos; i++){ // varre o vetor de codigos.
+                if (cod[i] == searchcodsell){ // acha o indice do produto com o codigo informado.
+                    if (quantidade[i] < qntd_vendida){ // Verifica a quantidade no estoque.
                         printf("\nSo ha %d unidades no estoque!", quantidade[i]);
                     }
-                    else{
+                    else{ // Faz a venda se houver a quantidade necessaria no estoque, e desconta do estoque.
                         quantidade[i] -= qntd_vendida;
                         printf("\nVenda realizada!");
                         break;
@@ -166,20 +164,20 @@ int main(){
 
             break;
 
-        case 5:
-            if(qnt_produtos == 0){
+        case 5: // Escolha 5: Exibir estoque.
+            if(qnt_produtos == 0){ // Verifica se ha algum produto cadastrado.
                 printf("\nNao ha produtos cadastrados ainda.");
                 break;
             }
 
             printf("\nEstoque");
             printf("\n-------------------------------");
-            for(int i=0; i<qnt_produtos; i++){
+            for(int i=0; i<qnt_produtos; i++){ // Varre os vetores/matriz, e printa na tela.
             printf("\n[%d] %s: R$%.2f (%d)", cod[i], produto[i], price[i], quantidade[i]);
             }
             break;
         
-        default:
+        default: // Escolha Invalída: mensagem de erro e volta pro menu.
             printf("\nEscolha invalida. Redirecionando para o menu novamente...");
             break;
         }
