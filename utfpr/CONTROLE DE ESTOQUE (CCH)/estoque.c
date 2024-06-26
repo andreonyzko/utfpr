@@ -48,7 +48,7 @@ int main(){
                     }
                 }
 
-                if(searchreturn_add == 'T'){ // Se a ja existencia do codigo for T (True), ele exibe a mensagem de erro break.
+                if(searchreturn_add == 'T'){ // Se a ja existencia do codigo for T (True), ele exibe a mensagem de erro e break.
                     printf("\nEste codigo ja foi cadastrado anteriormente.");
                     break;
                 }
@@ -88,9 +88,15 @@ int main(){
                     printf("Quantidade: ");
                     int qnt_add_estoque;
                     scanf("%d", &qnt_add_estoque);
-                    quantidade[i] += qnt_add_estoque;
-                    printf("\nEstoque de \"%s\" alterado.", produto[i]);
-                    break;
+                    if (quantidade[i] + qnt_add_estoque < 0){
+                        printf("\nSo ha %d unidades no estoque.", quantidade[i]);
+                        break;
+                    }
+                    else{
+                        quantidade[i] += qnt_add_estoque;
+                        printf("\nEstoque de \"%s\" alterado.", produto[i]);
+                        break;
+                    }
                 }
             }
             if(searchreturn_estoque== 'F'){ // Da mensagem de erro se nao achou nenhum produto com o codigo.
