@@ -15,6 +15,17 @@ void cadastrar(){
     agendamentos++;
 }
 
+void relatorio(){
+    printf("Relatorio:\n");
+    for(int i=0; i<agendamentos; i++){
+        if(strcmp(nomes[i],"excluido") == 0){
+            continue;
+        } else{
+            printf("[%s - %s] %s\n", datas[i], horarios[i], nomes[i]);
+        }
+    }
+}
+
 void consultar(){
     int codigo;
     printf("Codigo do agendamento: ");
@@ -34,17 +45,53 @@ void atualizar(){
     printf("Codigo do agendamento: ");
     scanf("%d", &codigo);
     printf("=-=-=-=-=-=-=-=-=-=-=\n");
-    if(codigo > agendamentos-1){
+    if(codigo > agendamentos-1 || strcmp(nomes[codigo], "excluido") == 0){
         printf("Agendamento nao encontrado.\n");
     }
     else{
-        printf("Cliente: ");
-        scanf(" %[^\n]s", nomes[codigo]);
-        printf("Data (DD/MM/AAAA): ");
-        scanf(" %[^\n]s", datas[codigo]);
-        printf("Horario (HH:MM): ");
-        scanf(" %[^\n]s", horarios[codigo]);
-        printf("\nAgendamento atualizado com sucesso!\n");
+        int choice=0;
+        printf("O que deseja atualizar?\n");
+        printf("[1] Nome\n");
+        printf("[2] Data\n");
+        printf("[3] Horario\n");
+        printf("[4] Tudo\n");
+        printf("Atualizar item: ");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+        case 1:
+            printf("Cliente: ");
+            scanf(" %[^\n]s", nomes[codigo]);
+            printf("\nAgendamento atualizado com sucesso!\n");
+            break;
+
+        case 2:
+            printf("Data (DD/MM/AAAA): ");
+            scanf(" %[^\n]s", datas[codigo]);
+            printf("\nAgendamento atualizado com sucesso!\n");
+            break;
+
+        case 3:
+            printf("Horario (HH:MM): ");
+            scanf(" %[^\n]s", horarios[codigo]);
+            printf("\nAgendamento atualizado com sucesso!\n");
+            break;
+
+        case 4:
+            printf("Cliente: ");
+            scanf(" %[^\n]s", nomes[codigo]);
+            printf("Data (DD/MM/AAAA): ");
+            scanf(" %[^\n]s", datas[codigo]);
+            printf("Horario (HH:MM): ");
+            scanf(" %[^\n]s", horarios[codigo]);
+            printf("\nAgendamento atualizado com sucesso!\n");
+            break;
+
+        default:
+        printf("Esccolha inválida.\n");
+            break;
+        }
     }
 }
 
@@ -53,7 +100,7 @@ void excluir(){
     printf("Codigo do agendamento: ");
     scanf("%d", &codigo);
     printf("=-=-=-=-=-=-=-=-=-=-=\n");
-    if(codigo > agendamentos-1){
+    if(codigo > agendamentos-1 || strcmp(nomes[codigo], "excluido") == 0){
         printf("Agendamento nao encontrado.\n");
     }
 
@@ -72,9 +119,10 @@ int main(){
 
         printf("=-=- AGENDAMENTO -=-=\n");
         printf("[1] Cadastrar\n");
-        printf("[2] Consultar\n");
-        printf("[3] Atualizar\n");
-        printf("[4] Excluir\n\n");
+        printf("[2] Relatorio\n");
+        printf("[3] Consultar\n");
+        printf("[4] Atualizar\n");
+        printf("[5] Excluir\n\n");
         printf("Acao: ");
         scanf("%d", &menu);
         printf("=-=-=-=-=-=-=-=-=-=-=\n");
@@ -88,25 +136,34 @@ int main(){
 
         case 2:
             if (agendamentos == 0){
-                printf("\n Nao ha agendamentos ativos!");
+                printf("Nao ha agendamentos ativos!\n");
+            }
+            else{
+                relatorio();
+            }
+            break;
+
+        case 3:
+            if (agendamentos == 0){
+                printf("Nao ha agendamentos ativos!\n");
             }
             else{
                 consultar();
             }
             break;
 
-        case 3:
+        case 4:
             if (agendamentos == 0){
-                printf("\n Nao ha agendamentos ativos!");
+                printf("Nao ha agendamentos ativos!\n");
             }
             else{
                 atualizar();
             }
             break;
 
-        case 4:
+        case 5:
             if (agendamentos == 0){
-                printf("\n Nao ha agendamentos ativos!");
+                printf("Nao ha agendamentos ativos!\n");
             }
             else{
                 excluir();
