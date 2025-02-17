@@ -32,6 +32,8 @@ typedef struct{
     int chances;
     int pontuacao;
     char display[MAX_PALAVRA];
+    char boneco_layout[6];
+    char boneco_display[6];
 } Jogo;
 
 typedef struct{
@@ -78,12 +80,8 @@ int main(){
 }
 
 void novojogo(){
-    // BONECO DA FORCA
-    char boneco_layout[6] = {'\\','/','\\','|','/','O'};
-    char boneco[6] = {' ',' ',' ',' ',' ',' '};
-
-    // VERIFICAR SE HÁ PALAVRA CADASTRADA 
-    if(contar_palavras('N') == 0){
+    // VERIFICAR SE HÁ 10 PALAVRAS CADASTRADAS 
+    if(contar_palavras('N') == 10){
         printf("Não há palavras cadastradas.\n");
         return;
     }
@@ -107,24 +105,25 @@ void novojogo(){
     fclose(arquivo);
     
     // DEFINIR PARAMETROS DA PARTIDA
-    Jogo partida = {"", " ", 6, 0, " "};
+    Jogo partida = {"", " ", 6, 0, " ", {'\\','/','\\','|','/','O'}, {' ',' ',' ',' ',' ',' '}};
     strcpy(partida.resposta, resposta.palavra);
 
-    // PRIMEIRA RODADA
+    // DEFININDO DISPLAY
     int i=0;
-    printf("____\n|  |\n|  %c\n| %c%c%c\n| %c %c       ", boneco[5], boneco[4], boneco[3], boneco[2], boneco[1], boneco[0]);
     for(i=0; partida.resposta[i] != '\0'; i++) partida.display[i] = '_';
     partida.resposta[i] = '\0';
 
-    for(int i=0; partida.display[i] != '\0'; i++) printf("%c ", partida.display[i]);
-    printf("\n\n");
-    printf("Letras usadas: %s\n", partida.letras_usadas);
-    printf("Pontuação: %d\n", partida.pontuacao);
-    printf("Chances restantes: %d\n", partida.chances);
-
-    // PROXIMAS RODADAS
     int qntd_letras_usadas=0;
     while (1){
+        // RODADA
+        printf("\n=============================================\n");
+        printf("____\n|  |\n|  %c\n| %c%c%c\n| %c %c       ", partida.boneco_display[5], partida.boneco_display[4], partida.boneco_display[3], partida.boneco_display[2], partida.boneco_display[1], partida.boneco_display[0]);
+        for(int i=0; partida.display[i] != '\0'; i++) printf("%c ", partida.display[i]);
+        printf("\n\n");
+        printf("Letras usadas: %s\n", partida.letras_usadas);
+        printf("Pontuação: %d\n", partida.pontuacao);
+        printf("Chances restantes: %d\n", partida.chances);
+
         // OBTER LETRA
         char letra;
         printf("Digite uma letra: ");
@@ -160,7 +159,7 @@ void novojogo(){
             if(partida.pontuacao > 0){
                 partida.pontuacao -= 1;
             }
-            boneco[partida.chances] = boneco_layout[partida.chances];
+            partida.boneco_display[partida.chances] = partida.boneco_layout[partida.chances];
         }
 
         // ADICIONA A LETRA AO VETOR DE PALAVRAS USADAS
@@ -173,7 +172,7 @@ void novojogo(){
             printf("\n==================== PARABÉNS ====================\n");
             printf("Você descobriu que a palavra secreta era %s\n\n", partida.resposta);
 
-            printf("____\n|  |\n|  %c\n| %c%c%c\n| %c %c\n\n", boneco[5], boneco[4], boneco[3], boneco[2], boneco[1], boneco[0]);
+            printf("____\n|  |\n|  %c\n| %c%c%c\n| %c %c\n\n", partida.boneco_display[5], partida.boneco_display[4], partida.boneco_display[3], partida.boneco_display[2], partida.boneco_display[1], partida.boneco_display[0]);
 
             printf("--- ESTATISTÍCAS ---\n");
             printf("Pontuação: %d\n", partida.pontuacao);
@@ -189,7 +188,7 @@ void novojogo(){
             printf("\n==================== GAME OVER ====================\n");
             printf("Você não conseguiu adivinhar. A palavra secreta era %s\n\n", partida.resposta);
 
-            printf("____\n|  |\n|  %c\n| %c%c%c\n| %c %c\n\n", boneco[5], boneco[4], boneco[3], boneco[2], boneco[1], boneco[0]);
+            printf("____\n|  |\n|  %c\n| %c%c%c\n| %c %c\n\n", partida.boneco_display[5], partida.boneco_display[4], partida.boneco_display[3], partida.boneco_display[2], partida.boneco_display[1], partida.boneco_display[0]);
 
             printf("--- ESTATISTÍCAS ---\n");
             printf("Pontuação: %d\n", partida.pontuacao);
@@ -199,15 +198,6 @@ void novojogo(){
             printf("\n=================================================\n");
             return;
         }
-
-        // NOVA RODADA
-        printf("\n=============================================\n");
-        printf("____\n|  |\n|  %c\n| %c%c%c\n| %c %c       ", boneco[5], boneco[4], boneco[3], boneco[2], boneco[1], boneco[0]);
-        for(int i=0; partida.display[i] != '\0'; i++) printf("%c ", partida.display[i]);
-        printf("\n\n");
-        printf("Letras usadas: %s\n", partida.letras_usadas);
-        printf("Pontuação: %d\n", partida.pontuacao);
-        printf("Chances restantes: %d\n", partida.chances);
     }
 }
 
