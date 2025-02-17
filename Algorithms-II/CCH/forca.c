@@ -81,7 +81,7 @@ int main(){
 
 void novojogo(){
     // VERIFICAR SE HÁ 10 PALAVRAS CADASTRADAS 
-    if(contar_palavras('N') == 10){
+    if(contar_palavras('N') < 10){
         printf("Não há palavras cadastradas.\n");
         return;
     }
