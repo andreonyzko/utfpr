@@ -11,7 +11,6 @@
 #define MAX_PALAVRA 50
 #define MIN_PALAVRA 5
 
-
 // PROTÓTIPOS DAS FUNÇÕES
 void novojogo();
 void cadastrar();
@@ -22,16 +21,15 @@ int verificar_existencia(char *palavra);
 int verificar_formato(char *palavra);
 int contar_palavras(char removidos);
 int posicao_palavra(char *palavra);
-void maiusculo(char *palavra);
-void minusculo(char *palavra);
+void converter(char* palavra, char tipo[3]);
 
 // ESTRUTURAS JOGO E PALAVRA
 typedef struct{
-    char resposta[MAX_PALAVRA];
-    char letras_usadas[MAX_PALAVRA];
+    char* resposta;
+    char* letras_usadas;
     int chances;
     int pontuacao;
-    char display[MAX_PALAVRA];
+    char* display;
     char boneco_layout[6];
     char boneco_display[6];
 } Jogo;
@@ -56,7 +54,8 @@ int main(){
     
     // MENU INICIAL
     while(1){
-        char opt[100];
+        char *opt = (char*)calloc(50,sizeof(char));
+        srand(time(NULL)); // GARANTE QUE NÃO VAI REPETIR PALAVRA;
         printf("=-=-=-=-=-=-=- MENU -=-=-=-=-=-=-=-=\n");
         printf("> Novo jogo\n");
         printf("> Cadastrar palavra\n");
@@ -67,7 +66,7 @@ int main(){
         scanf(" %[^\n]s", opt);
         printf("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
 
-        minusculo(opt);
+        converter(opt, "MIN");
 
         if(strcmp(opt, "novo jogo") == 0) novojogo();
         else if(strcmp(opt, "cadastrar palavra") == 0) cadastrar();
@@ -76,13 +75,14 @@ int main(){
         else if(strcmp(opt, "mostrar palavras") == 0) mostrar();
         else if(strcmp(opt, "sair") == 0) break;
         else printf("Opção inválida\n");
+        free(opt);
     }
 }
 
 void novojogo(){
     // VERIFICAR SE HÁ 10 PALAVRAS CADASTRADAS 
     if(contar_palavras('N') < 10){
-        printf("Não há palavras cadastradas.\n");
+        printf("Não há 10 palavras cadastradas.\n");
         return;
     }
 
@@ -94,7 +94,6 @@ void novojogo(){
 
     // SORTEAR PALAVRA
     Palavra resposta;
-    srand(time(NULL));
     while(1){
         int pos_palavra = rand() % contar_palavras('S');
         fseek(arquivo, pos_palavra*sizeof(Palavra), SEEK_SET);
@@ -105,13 +104,21 @@ void novojogo(){
     fclose(arquivo);
     
     // DEFINIR PARAMETROS DA PARTIDA
-    Jogo partida = {"", " ", 6, 0, " ", {'\\','/','\\','|','/','O'}, {' ',' ',' ',' ',' ',' '}};
+    Jogo partida = {((char*)calloc(strlen(resposta.palavra)+1,sizeof(char))), ((char *)calloc(1,sizeof(char))), 6, 0, ((char*)calloc(strlen(resposta.palavra)+1,sizeof(char))), {'\\','/','\\','|','/','O'}, {' ',' ',' ',' ',' ',' '}};
+    if(!partida.resposta || !partida.letras_usadas || !partida.display){
+        printf("Erro ao alocar memória.\n");
+        free(partida.letras_usadas);
+        free(partida.display);
+        free(partida.resposta);
+        return;
+    }
+    partida.letras_usadas[0] = '\0';
     strcpy(partida.resposta, resposta.palavra);
 
     // DEFININDO DISPLAY
     int i=0;
     for(i=0; partida.resposta[i] != '\0'; i++) partida.display[i] = '_';
-    partida.resposta[i] = '\0';
+    partida.display[i] = '\0';
 
     int qntd_letras_usadas=0;
     while (1){
@@ -163,6 +170,15 @@ void novojogo(){
         }
 
         // ADICIONA A LETRA AO VETOR DE PALAVRAS USADAS
+        char* temp = (char*)realloc(partida.letras_usadas, (qntd_letras_usadas + 2)*sizeof(char));
+        if(!temp){
+            printf("Erro ao realocar memória\n");
+            free(partida.letras_usadas);
+            free(partida.display);
+            free(partida.resposta);
+            return;
+        }
+        partida.letras_usadas = temp;
         partida.letras_usadas[qntd_letras_usadas] = letra;
         partida.letras_usadas[qntd_letras_usadas+1] = '\0';
         qntd_letras_usadas++;
@@ -180,6 +196,10 @@ void novojogo(){
             printf("Letras usadas: %s\n", partida.letras_usadas);
             printf("Chances restantes: %d\n", partida.chances);
             printf("\n=================================================\n");
+            free(temp);
+            free(partida.letras_usadas);
+            free(partida.display);
+            free(partida.resposta);
             return;
         }
 
@@ -196,6 +216,10 @@ void novojogo(){
             printf("Letras usadas: %s\n", partida.letras_usadas);
             printf("Chances restantes: %d\n", partida.chances);
             printf("\n=================================================\n");
+            free(temp);
+            free(partida.letras_usadas);
+            free(partida.display);
+            free(partida.resposta);
             return;
         }
     }
@@ -239,7 +263,7 @@ void atualizar(){
     Palavra antigaPalavra;
     printf("Digite a palavra que quer alterar: ");
     scanf(" %[^\n]s", antigaPalavra.palavra);
-    maiusculo(antigaPalavra.palavra);
+    converter(antigaPalavra.palavra,"MAI");
 
     // PEGAR A POSIÇÃO DA PALAVRA ANTIGA, SE NÃO EXISTIR, ABORTA
     int posicao = posicao_palavra(antigaPalavra.palavra);
@@ -277,7 +301,7 @@ void apagar(){
     Palavra antigaPalavra;
     printf("Digite a palavra que quer excluir: ");
     scanf(" %[^\n]s", antigaPalavra.palavra);
-    maiusculo(antigaPalavra.palavra);
+    converter(antigaPalavra.palavra,"MAI");
 
     // PEGAR A POSIÇÃO DA PALAVRA ANTIGA, SE NÃO EXISTIR, ABORTA
     int posicao = posicao_palavra(antigaPalavra.palavra);
@@ -313,10 +337,10 @@ void mostrar(){
 
 int verificar_formato(char *palavra){
     // PASSAR PARA MAISCULO
-    maiusculo(palavra);
+    converter(palavra,"MAI");
 
     // VERIFICA SE A PALAVRA TEM ENTRE 5 E 50 LETRAS
-    if(strlen(palavra) < 5 || strlen(palavra) > MAX_PALAVRA){
+    if(strlen(palavra) < MIN_PALAVRA || strlen(palavra) > MAX_PALAVRA){
         printf("A palavra deve conter entre 5 e 50 letras\n");
         return 1;
     }
@@ -403,10 +427,19 @@ int contar_palavras(char removidos){
     return contador;
 }
 
-void maiusculo(char *palavra){
-    for(int i=0; palavra[i] != '\0'; i++) palavra[i] = toupper(palavra[i]);
-}
+void converter(char* palavra, char tipo[3]){
+    // VERIFICA SE É O FINAL DA PALAVRA
+    if(*palavra == '\0') return;
 
-void minusculo(char *palavra){
-    for(int i=0; palavra[i] != '\0'; i++) palavra[i] = tolower(palavra[i]);
+    // CONVERTE PARA MINUSCULO A LETRA
+    if(strcmp(tipo,"MIN") == 0){
+        *palavra = tolower(*palavra);
+    }
+    //CONVERTE PARA MAISCULO A LETRA
+    else if(strcmp(tipo,"MAI") == 0){
+        *palavra = toupper(*palavra);
+    }
+
+    // CHAMA A CONVERSÃO DA PRÓXIMA LETRA
+    converter(palavra + 1, tipo);
 }
