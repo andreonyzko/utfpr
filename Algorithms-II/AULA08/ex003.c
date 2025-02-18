@@ -3,20 +3,19 @@
 #include <ctype.h>
 
 char *findAlphabeticFile(FILE *f){
-    char c;
-    char result[100];
-    char *point = result;
-    int count=0;
-    while((c= fgetc(f)) != '\0'){
-        if(isalpha(c)){
-            result[count] = c;
-            count++;
+    char* letras = (char *)calloc(3,sizeof(char));
+    letras = NULL;
+    char buffer;
+    int contador=0;
+    for(int i=0; fread(&buffer, sizeof(char), 1, f); i++){
+        if(isalpha(buffer)){
+            letras = realloc(letras, contador+2);
+            letras[contador] = buffer;
+            letras[contador+1] = '\0';
+            contador++;
         }
     }
-    result[count] = '\0';
-    printf("%s", result);
-
-    return point;
+    return letras;
 }
 
 int main(){
