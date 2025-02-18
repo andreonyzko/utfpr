@@ -17,24 +17,24 @@ void cadastrar();
 void atualizar();
 void apagar();
 void mostrar();
-int verificar_existencia(char *palavra);
-int verificar_formato(char *palavra);
+int verificar_existencia(char *palavra); // <- uso de ponteiros
+int verificar_formato(char *palavra); // <- uso de ponteiros
 int contar_palavras(char removidos);
-int posicao_palavra(char *palavra);
-void converter(char* palavra, char tipo[3]);
+int posicao_palavra(char *palavra); // <- uso de ponteiros
+void converter(char* palavra, char tipo[3]); // <- uso de ponteiros // <- FUNÇÃO RECURSIVA
 
 // ESTRUTURAS JOGO E PALAVRA
-typedef struct{
-    char* resposta;
-    char* letras_usadas;
+typedef struct{ // <- uso de registros/structs
+    char* resposta; // <- alocação dinâmica
+    char* letras_usadas; // <- alocação dinâmica
     int chances;
     int pontuacao;
-    char* display;
+    char* display; // <- alocação dinâmica
     char boneco_layout[6];
     char boneco_display[6];
 } Jogo;
 
-typedef struct{
+typedef struct{ // <- uso de registros/structs
     char palavra[MAX_PALAVRA];
 } Palavra;
 
@@ -86,6 +86,7 @@ void novojogo(){
         return;
     }
 
+    // ABRE O ARQUIVO PARA LEITURA
     FILE *arquivo = fopen("palavras.bin","rb");
     if(!arquivo){
         printf("Erro ao acessar o arquivo de palavras");
@@ -104,7 +105,7 @@ void novojogo(){
     fclose(arquivo);
     
     // DEFINIR PARAMETROS DA PARTIDA
-    Jogo partida = {((char*)calloc(strlen(resposta.palavra)+1,sizeof(char))), ((char *)calloc(1,sizeof(char))), 6, 0, ((char*)calloc(strlen(resposta.palavra)+1,sizeof(char))), {'\\','/','\\','|','/','O'}, {' ',' ',' ',' ',' ',' '}};
+    Jogo partida = {((char*)calloc(strlen(resposta.palavra)+1,sizeof(char))), ((char *)calloc(1,sizeof(char))), 6, 0, ((char*)calloc(strlen(resposta.palavra)+1,sizeof(char))), {'\\','/','\\','|','/','O'}, {' ',' ',' ',' ',' ',' '}}; // <- alocação dinâmica
     if(!partida.resposta || !partida.letras_usadas || !partida.display){
         printf("Erro ao alocar memória.\n");
         free(partida.letras_usadas);
@@ -170,7 +171,7 @@ void novojogo(){
         }
 
         // ADICIONA A LETRA AO VETOR DE PALAVRAS USADAS
-        char* temp = (char*)realloc(partida.letras_usadas, (qntd_letras_usadas + 2)*sizeof(char));
+        char* temp = (char*)realloc(partida.letras_usadas, (qntd_letras_usadas + 2)*sizeof(char)); // <- realocação dinâmica
         if(!temp){
             printf("Erro ao realocar memória\n");
             free(partida.letras_usadas);
@@ -427,7 +428,7 @@ int contar_palavras(char removidos){
     return contador;
 }
 
-void converter(char* palavra, char tipo[3]){
+void converter(char* palavra, char tipo[3]){ // <- FUNÇÃO RECURSIVA
     // VERIFICA SE É O FINAL DA PALAVRA
     if(*palavra == '\0') return;
 
