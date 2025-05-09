@@ -103,7 +103,7 @@ void inserir(PtrLista l, int valor)
     {
         for (PtrNo i = l->inicio; i != NULL; i = i->proximo)
         {
-            if (i->proximo == NULL || (i->proximo->key >= valor && i->key <= valor))
+            if (i->proximo == NULL || valor < i->proximo->key)
             {
                 no->proximo = i->proximo;
                 i->proximo = no;
