@@ -9,5 +9,6 @@ Este repositório reúne exercícios, projetos e materiais desenvolvidos durante
 - **C**
 - **Java**
 - **SQL**
+- **PLpgSQL**
 
 ---
