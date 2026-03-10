@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ONG Pecuária</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="shortcut icon" href="images/icon.png" type="image/png">
+</head>
+<body>
+    <header>
+        <div class="logo-menu">
+            <img src="images/icon.png" alt="icone da pagina">
+            <svg id="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="#e3e3e3"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="./corte.html">Bezerros</a></li>
+                <li><a href="./adotados.html">Adotados</a></li>
+                <li><a href="./index.html">Sair</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>Catálogo de Bezerros</h1>
+        <hr>
+        <section class="lista-cards" id="lista-bezerros"></section>
+    </main>
+    <script>
+        // Seleção dos elementos e dados
+        const secaoBezerros = document.querySelector("#lista-bezerros");
+        let bezerros = JSON.parse(localStorage.getItem("bezerrosDisponiveis")) || [];
+
+        // Renderização dos bezerros
+        bezerros.forEach((bezerro, index) => {
+            secaoBezerros.innerHTML +=
+                `
+                <article class="card">
+                    <img src="${bezerro.urlFoto}" alt="Foto de bezerro">
+                    <p class="nome-bezerro">${bezerro.nome}</p>
+                    <p class="desc-bezerro">${bezerro.desc}</p>
+                    <p class="dono-bezerro">Vendedor: ${bezerro.dono.username}</p>
+                    <button class="adotar-bezzero" data-id=${index}>Adotar</button>
+                </article>
+                `
+        });
+
+        // Escutar botões de adoção
+        const botoesAdotar = document.querySelectorAll(".adotar-bezzero");
+        botoesAdotar.forEach(botao => {
+            botao.addEventListener('click', e => {
+                const index = e.target.getAttribute("data-id");
+
+                // cria o novo objeto de bezerro adotado
+                const bezerro = {
+                    ...bezerros[index],
+                    vendedor: bezerros[index].dono,
+                    dono: JSON.parse(localStorage.getItem("conta"))
+                };
+
+                // adiciona pontos ao vendedor
+                const usuarios = JSON.parse(localStorage.getItem("usuarios"));
+                const indexVendedor = usuarios.findIndex(u => u.username == bezerro.vendedor.username);
+                let vendedor = usuarios[indexVendedor];
+                vendedor = {
+                    ...vendedor,
+                    pontos: vendedor.pontos + 100
+                }
+                usuarios[indexVendedor] = vendedor;
+                localStorage.setItem("usuarios", JSON.stringify(usuarios));
+                
+
+                // remove o bezerro da lista de disponiveis
+                bezerros.splice(index, 1);
+                localStorage.setItem("bezerrosDisponiveis", JSON.stringify(bezerros));
+                e.target.parentElement.remove();
+
+                // adiciona o bezerro á lista de adotados
+                const bezerrosAdotados = JSON.parse(localStorage.getItem("bezerrosAdotados")) || [];
+                bezerrosAdotados.push(bezerro);
+                localStorage.setItem("bezerrosAdotados", JSON.stringify(bezerrosAdotados));
+            })
+        })
+    </script>
+    <script src="scripts/menu.js"></script>
+</body>
+</html>

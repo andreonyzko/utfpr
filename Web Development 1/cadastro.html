@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ONG Pecuária</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="shortcut icon" href="images/icon.png" type="image/png">
+</head>
+
+<body class="cadastro">
+    <div id="cadastro-form-container">
+        <form class="cadastro">
+            <h1>Cadastro</h1>
+            <hr>
+            <p class="campo-input">
+                <label for="username">Usuário</label>
+                <input type="text" name="username" id="username" required>
+            </p>
+
+            <p class="campo-input">
+                <label for="senha">Senha</label>
+                <input type="password" name="senha" id="senha" required>
+            </p>
+
+            <p class="campo-input">
+                <label>Eu sou:</label>
+                <label><input type="radio" name="tipo-usuario" value="leiteiro" checked> Produtor de gado
+                    leiteiro</label>
+                <label><input type="radio" name="tipo-usuario" value="corte"> Produtor de gado de corte</label>
+                <label><input type="radio" name="tipo-usuario" value="empresa"> Empresa parceira</label>
+                <label><input type="radio" name="tipo-usuario" value="ong"> ONG</label>
+
+            </p>
+
+            <a href="index.html">Voltar para a página de login</a>
+
+            <button type="submit">Cadastrar</button>
+        </form>
+    </div>
+
+    <div id="login-img"></div>
+
+    <script>
+        const formulario = document.querySelector("form");
+        formulario.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // Coleta os valores dos inputs
+            const username = document.querySelector("input#username").value;
+            const senha = document.querySelector("input#senha").value;
+            const tipo = document.querySelector('input[name="tipo-usuario"]:checked').value;
+
+            // Cria o novo usuário, se for leiteiro vai ter o atributo pontos também
+            let novoUsuario = { username, senha, tipo }
+            if(novoUsuario.tipo === "leiteiro"){
+                novoUsuario = { ...novoUsuario, pontos: 0};
+            }
+            
+            // Puxa a lista de usuarios do localStorage e verifica se o username é único
+            const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+            if(usuarios.find(u => u.username === username)){
+                alert("Já existe um usuário cadastrado com esse username");
+                return;
+            }
+
+            // Adiciona o novo usuário a lista e atualiza localStorage
+            usuarios.push(novoUsuario);
+            localStorage.setItem("usuarios", JSON.stringify(usuarios));
+
+            // Redireciona para a página de login
+            window.location.href = "index.html";
+        })
+    </script>
+</body>
+
+</html>

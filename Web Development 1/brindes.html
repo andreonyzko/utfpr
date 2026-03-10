@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ONG Pecuária</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="shortcut icon" href="images/icon.png" type="image/png">
+</head>
+
+<body>
+    <header>
+        <div class="logo-menu">
+            <img src="images/icon.png" alt="icone da pagina">
+            <svg id="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="#e3e3e3"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="./leiteiro.html">Meus Bezerros</a></li>
+                <li><a href="./cadastrarBezerro.html">Cadastrar Bezerro</a></li>
+                <li><a href="./brindes.html">Brindes</a></li>
+                <li><a href="./index.html">Sair</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h1>Brindes</h1>
+            <p>Meus Pontos: <span id="pontos-container">0</span> </p>
+        </section>
+        <hr>
+        <section class="lista-cards" id="lista-brindes"></section>
+    </main>
+    <script>
+        // Renderiza quantos pontos o leiteiro tem
+        const pontos = JSON.parse(localStorage.getItem("conta")).pontos;
+        document.querySelector("#pontos-container").innerText= pontos;
+
+        // Seleciona os elementos e dados
+        const secaoBrindes = document.querySelector("#lista-brindes");
+        const brindes = JSON.parse(localStorage.getItem("brindes")) || [];
+
+        // Renderiza todos os brindes
+        brindes.forEach((brinde, index) => {
+            secaoBrindes.innerHTML +=
+                `
+                <article class="card">
+                    <img src="${brinde.urlFoto}" alt="Foto do brinde">
+                    <p class="nome-brinde">${brinde.nome} (${brinde.valor} pontos)</p>
+                    <p class="desc-brinde">${brinde.desc}</p>
+                    <p class="dono-brinde">Patrocinado por ${brinde.dono.username}</p>
+                    ${pontos >= brinde.valor ?
+                    `<button class="resgatar-brinde" data-id=${index}>Resgatar</button>` :
+                    `<button class="insuficiente-brinde" data-id=${index}>Saldo Insuficiente</button>`
+                }
+                </article>  
+            `
+        });
+
+        // Escuta os botões de resgatar
+        const resgatarBotoes = document.querySelectorAll(".resgatar-brinde");
+        resgatarBotoes.forEach(botao => {
+            botao.addEventListener('click', e => {
+                const indexBrinde = e.target.getAttribute("data-id");
+
+                // coleta o link de resgate
+                const urlResgate = brindes[indexBrinde].urlResgate;
+                const valorBrinde = brindes[indexBrinde].valor;
+
+                // remove pontos do comprador
+                let comprador = JSON.parse(localStorage.getItem("conta"));
+                const usuarios = JSON.parse(localStorage.getItem("usuarios"));
+                const indexComprador = usuarios.findIndex(u => u.username == comprador.username);
+                comprador = {
+                    ...comprador,
+                    pontos: comprador.pontos - valorBrinde
+                }
+                usuarios[indexComprador] = comprador;
+                localStorage.setItem("usuarios", JSON.stringify(usuarios));
+                localStorage.setItem("conta", JSON.stringify(comprador));
+
+                // remove o brinde da lista de brindes
+                brindes.splice(indexBrinde, 1);
+                localStorage.setItem("brindes", JSON.stringify(brindes));
+                e.target.parentElement.remove();
+
+                // redireciona o usuario a página de resgate
+                window.location.href = urlResgate;
+            })
+        })
+    </script>
+    <script src="scripts/menu.js"></script>
+</body>
+
+</html>

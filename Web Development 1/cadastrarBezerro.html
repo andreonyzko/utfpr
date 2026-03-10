@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ONG Pecuária</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="shortcut icon" href="images/icon.png" type="image/png">
+</head>
+
+<body>
+    <header>
+        <div class="logo-menu">
+            <img src="images/icon.png" alt="icone da pagina">
+            <svg id="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="#e3e3e3"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="./leiteiro.html">Meus Bezerros</a></li>
+                <li><a href="./cadastrarBezerro.html">Cadastrar Bezerro</a></li>
+                <li><a href="./brindes.html">Brindes</a></li>
+                <li><a href="./index.html">Sair</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>Cadastrar Bezerro</h1>
+        <hr>
+        <form>
+            <p class="campo-input">
+                <label for="fotoBezerro">URL Foto:</label>
+                <input type="url" name="fotoBezerro" id="fotoBezerro" required>
+            </p>
+            <p class="campo-input">
+                <label for="nomeBezerro">Nome</label>
+                <input type="text" name="nomeBezerro" id="nomeBezerro" required>
+            </p>
+            <p class="campo-input">
+                <label for="descBezerro">Descrição</label>
+                <textarea name="descBezerro" id="descBezerro" required></textarea>
+            </p>
+
+            <button type="submit">Cadastrar</button>
+        </form>
+    </main>
+
+    <script>
+        const formulario = document.querySelector("form");
+        formulario.addEventListener('submit', e => {
+            e.preventDefault();
+
+            // Coleta os valores dos inputs
+            let urlFoto = formulario.querySelector("#fotoBezerro").value;
+            let nome = formulario.querySelector("#nomeBezerro").value;
+            let desc = formulario.querySelector("#descBezerro").value;
+
+            // Cria objeto bezerro
+            let bezerro = {
+                urlFoto, 
+                nome, 
+                desc, 
+                dono: JSON.parse(localStorage.getItem("conta"))
+            };
+
+            // Coleta a lista do localStorage, adiciona o novo bezerro e atualiza o localStorage.
+            let bezerros = JSON.parse(localStorage.getItem("bezerrosDisponiveis")) || [];
+            bezerros.push(bezerro);
+            localStorage.setItem("bezerrosDisponiveis", JSON.stringify(bezerros));
+
+            // Redireciona para a página de Meus Bezerros
+            window.location.href = 'leiteiro.html';
+        })
+    </script>
+    <script src="scripts/menu.js"></script>
+</body>
+
+</html>

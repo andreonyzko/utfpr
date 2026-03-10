@@ -1,0 +1,28 @@
+body.login, body.cadastro{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    height: 100vh;
+    
+    #login-img{
+        background-image: url("https://cptstatic.s3.amazonaws.com/imagens/enviadas/materias/materia27376/a-importancia-dos-cruzamentos-na-pecuaria-leiteira-cpt.jpg");
+        background-size: cover;
+    }
+
+    #login-form-container, #cadastro-form-container{
+        background-color: var(--blue);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 720px) {
+    body.login, body.cadastro {
+        grid-template-columns: 1fr 0;
+    }
+
+    #login-form-container, #cadastro-form-container{
+        background-image: url("https://cptstatic.s3.amazonaws.com/imagens/enviadas/materias/materia27376/a-importancia-dos-cruzamentos-na-pecuaria-leiteira-cpt.jpg");
+        background-size: cover;
+    }
+}

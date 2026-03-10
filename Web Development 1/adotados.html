@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ONG Pecuária</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="shortcut icon" href="images/icon.png" type="image/png">
+</head>
+<body>
+     <header>
+        <div class="logo-menu">
+            <img src="images/icon.png" alt="icone da pagina">
+            <svg id="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="#e3e3e3"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="./corte.html">Bezerros</a></li>
+                <li><a href="./adotados.html">Adotados</a></li>
+                <li><a href="./index.html">Sair</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>Bezerros Adotados</h1>
+        <hr>
+        <section class="lista-cards" id="lista-bezerros"></section>
+    </main>
+    <script>
+        // Coleta a seção e lista de bezerros adotados
+        const secaoBezerros = document.querySelector("#lista-bezerros");
+        let bezerrosAdotados = JSON.parse(localStorage.getItem("bezerrosAdotados")) || [];
+
+        // Filtra a lista apenas pelos bezerros adotados pelo produtor de gado de corte logado
+        bezerrosAdotados = bezerrosAdotados.filter(b => b.dono.username === JSON.parse(localStorage.getItem("conta")).username )
+
+        // Renderiza os bezerros adotados
+        bezerrosAdotados.forEach((bezerro, index) => {
+            secaoBezerros.innerHTML +=
+                `
+                <article class="card">
+                    <img src="${bezerro.urlFoto}" alt="Foto de bezerro">
+                    <p class="nome-bezerro">${bezerro.nome}</p>
+                    <p class="desc-bezerro">${bezerro.desc}</p>
+                    <p class="vendedor-bezerro">Adotado de ${bezerro.vendedor.username}</p>
+                </article>
+                `
+        });
+    </script>
+    <script src="scripts/menu.js"></script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ONG Pecuária</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="shortcut icon" href="images/icon.png" type="image/png">
+</head>
+
+<body>
+    <header>
+        <div class="logo-menu">
+            <img src="images/icon.png" alt="icone da pagina">
+            <svg id="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="#e3e3e3">
+                <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
+            </svg>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="./leiteiro.html">Meus Bezerros</a></li>
+                <li><a href="./cadastrarBezerro.html">Cadastrar Bezerro</a></li>
+                <li><a href="./brindes.html">Brindes</a></li>
+                <li><a href="./index.html">Sair</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>Meus Bezerros</h1>
+        <hr>
+        <section class="lista-cards" id="lista-bezerros"></section>
+    </main>
+    <script>
+        // Coleta a seção e lista de bezerros
+        const secaoBezerros = document.querySelector("#lista-bezerros");
+        let bezerros = JSON.parse(localStorage.getItem("bezerrosDisponiveis")) || [];
+        // Filtra apenas os bezerros do determinado leiteiro logado
+        const username = JSON.parse(localStorage.getItem("conta")).username;
+
+        // Renderiza os bezerros
+        bezerros.forEach((bezerro, index) => {
+            if(bezerro.dono.username == username){
+                secaoBezerros.innerHTML +=
+                `
+                <article class="card">
+                    <img src="${bezerro.urlFoto}" alt="Foto de bezerro">
+                    <p class="nome-bezerro">${bezerro.nome}</p>
+                    <p class="desc-bezerro">${bezerro.desc}</p>
+                    <button class="excluir-bezzero" data-id=${index}>Excluir</button>
+                </article>
+                `
+            }
+        });
+
+        // Escuta os botões de excluir
+        const botoesExcluir = document.querySelectorAll(".excluir-bezzero");
+        botoesExcluir.forEach(botao => {
+            botao.addEventListener('click', e => {
+                // Remove o bezerro da lista de bezerros disponíveis
+                const index = e.target.getAttribute("data-id");
+                bezerros.splice(index, 1);
+
+                // atualiza o localStorage
+                localStorage.setItem("bezerrosDisponiveis", JSON.stringify(bezerros));
+
+                // remove o elemento html referente ao bezerro
+                e.target.parentElement.remove();
+            })
+        })
+    </script>
+    <script src="scripts/menu.js"></script>
+
+</body>
+
+</html>

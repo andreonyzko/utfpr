@@ -1,0 +1,31 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+:root {
+    --blue: #203F7C;
+}
+
+body {
+    max-width: 100vw;
+    overflow-x: hidden;
+}
+
+img {
+    max-width: 100%;
+}
+
+button {
+    padding: 10px;
+    border: 0;
+    background-color: var(--blue);
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+a{
+    color: var(--blue);
+}

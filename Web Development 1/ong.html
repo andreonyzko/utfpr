@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ONG Pecuária</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="shortcut icon" href="images/icon.png" type="image/png">
+    <style>
+        .see-more{
+            opacity: 0.85;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+
+            svg{
+                width: 48px;
+                fill: white;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo-menu">
+            <img src="images/icon.png" alt="icone da pagina">
+            <svg id="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="#e3e3e3"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="./ong.html">Dashboard</a></li>
+                <li><a href="./ongBezerros.html">Bezerros</a></li>
+                <li><a href="./ongAdocoes.html">Adoções</a></li>
+                <li><a href="./ongBrindes.html">Brindes</a></li>
+                <li><a href="./index.html">Sair</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>Dashboard</h1>
+        <h2>Bezerros Disponiveis (<span id="qntd-bezerros">0</span>)</h2>
+        <hr>
+        <section class="lista-cards" id="lista-bezerros"></section>
+        <h2>Adoções Realizadas (<span id="qntd-adocoes">0</span>)</h2>
+        <hr>
+        <section class="lista-cards" id="lista-adocoes"></section>
+        <h2>Brindes cadastrados (<span id="qntd-brindes">0</span>)</h2>
+        <hr>
+        <section class="lista-cards" id="lista-brindes"></section>
+    </main>
+
+    <script>
+        // Coleta as seções
+        const secaoBezerros = document.querySelector("#lista-bezerros");
+        const secaoAdocoes = document.querySelector("#lista-adocoes");
+        const secaoBrindes = document.querySelector("#lista-brindes");
+        const montanteBezerros = document.querySelector("#qntd-bezerros")
+        const montanteAdocoes = document.querySelector("#qntd-adocoes")
+        const montanteBrindes = document.querySelector("#qntd-brindes")
+
+        // Pega os 3 primeiros bezerros disponiveis
+        let bezerros = JSON.parse(localStorage.getItem("bezerrosDisponiveis"));
+        const qntdBezerros = bezerros.length;
+        if(qntdBezerros > 3) bezerros = bezerros.slice(0,3);
+
+        // Pega as 3 primeiras adoções
+        let bezerrosAdotados = JSON.parse(localStorage.getItem("bezerrosAdotados"));
+        const qntdAdocoes = bezerrosAdotados.length
+        if(qntdAdocoes > 3) bezerrosAdotados = bezerrosAdotados.slice(0,3);
+
+        // Pega os 3 primeiros brindes
+        let brindes = JSON.parse(localStorage.getItem("brindes"));
+        const qntdBrindes = brindes.length;
+        if(qntdBrindes > 3) brindes = brindes.slice(0,3);
+
+        // Renderiza os bezerros
+        montanteBezerros.innerText = qntdBezerros;
+        bezerros.forEach((bezerro, index) => {
+            secaoBezerros.innerHTML +=
+                `
+                <article class="card">
+                    <img src="${bezerro.urlFoto}" alt="Foto de bezerro">
+                    <p class="nome-bezerro">${bezerro.nome}</p>
+                    <p class="desc-bezerro">${bezerro.desc}</p>
+                    <p class="dono-bezerro">Vendedor: ${bezerro.dono.username}</p>
+                    <button class="excluir-bezzero" data-id=${index}>Excluir</button>
+                </article>
+                `
+        });
+        secaoBezerros.innerHTML +=
+            `
+            <a href="./ongBezerros.html" class="card see-more">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M240-400q-33 0-56.5-23.5T160-480q0-33 23.5-56.5T240-560q33 0 56.5 23.5T320-480q0 33-23.5 56.5T240-400Zm240 0q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm240 0q-33 0-56.5-23.5T640-480q0-33 23.5-56.5T720-560q33 0 56.5 23.5T800-480q0 33-23.5 56.5T720-400Z"/></svg>
+                    <p>Ver todos</p>
+            </a>
+            `
+
+        // Renderiza as Adoções
+        montanteAdocoes.innerHTML = qntdAdocoes;
+        bezerrosAdotados.forEach((bezerro, index) => {
+            secaoAdocoes.innerHTML +=
+                `
+                <article class="card">
+                    <img src="${bezerro.urlFoto}" alt="Foto de bezerro">
+                    <p class="nome-bezerro">${bezerro.nome}</p>
+                    <p class="desc-bezerro">${bezerro.desc}</p>
+                    <p class="vendedor-bezerro">Adotado por ${bezerro.dono.username} de ${bezerro.vendedor.username}</p>
+                </article>
+                `
+        });
+        secaoAdocoes.innerHTML +=
+            `
+            <a href="./ongAdocoes.html" class="card see-more">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M240-400q-33 0-56.5-23.5T160-480q0-33 23.5-56.5T240-560q33 0 56.5 23.5T320-480q0 33-23.5 56.5T240-400Zm240 0q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm240 0q-33 0-56.5-23.5T640-480q0-33 23.5-56.5T720-560q33 0 56.5 23.5T800-480q0 33-23.5 56.5T720-400Z"/></svg>
+                    <p>Ver todos</p>
+            </a>
+            `
+
+        // Renderiza os Brindes cadastrados
+        montanteBrindes.innerHTML = qntdBrindes;
+        brindes.forEach((brinde, index) => {
+            secaoBrindes.innerHTML +=
+                `
+                <article class="card">
+                    <img src="${brinde.urlFoto}" alt="Foto do brinde">
+                    <p class="nome-brinde">${brinde.nome} (${brinde.valor} pontos)</p>
+                    <p class="desc-brinde">${brinde.desc}</p>
+                    <p class="dono-brinde">Patrocinado por ${brinde.dono.username}</p>
+                    <button class="excluir-brinde" data-id=${index}>Excluir</button>
+                </article>  
+            `
+        });
+        secaoBrindes.innerHTML +=
+            `
+            <a href="./ongBrindes.html" class="card see-more">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M240-400q-33 0-56.5-23.5T160-480q0-33 23.5-56.5T240-560q33 0 56.5 23.5T320-480q0 33-23.5 56.5T240-400Zm240 0q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm240 0q-33 0-56.5-23.5T640-480q0-33 23.5-56.5T720-560q33 0 56.5 23.5T800-480q0 33-23.5 56.5T720-400Z"/></svg>
+                    <p>Ver todos</p>
+            </a>
+            `
+
+        // Escuta os botões de excluir bezerro
+        const botoesExcluir = document.querySelectorAll(".excluir-bezzero");
+        botoesExcluir.forEach(botao => {
+            botao.addEventListener('click', e => {
+                // Remove o bezerro da lista de bezerros disponíveis
+                const index = e.target.getAttribute("data-id");
+                bezerros.splice(index, 1);
+
+                // atualiza o localStorage
+                localStorage.setItem("bezerrosDisponiveis", JSON.stringify(bezerros));
+
+                // remove o elemento html referente ao bezerro
+                e.target.parentElement.remove();
+            })
+        })
+
+        // Escuta os botões de excluir brinde
+        const excluirBotoes = document.querySelectorAll(".excluir-brinde");
+        excluirBotoes.forEach(botao => {
+            botao.addEventListener('click', e => {
+                const index = e.target.getAttribute("data-id");
+                brindes.splice(index, 1);
+                localStorage.setItem("brindes", JSON.stringify(brindes));
+                e.target.parentElement.remove();
+            })
+        })
+    </script>
+    <script src="scripts/menu.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ONG Pecuária</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="shortcut icon" href="images/icon.png" type="image/png">
+</head>
+
+<body>
+    <header>
+        <div class="logo-menu">
+            <img src="images/icon.png" alt="icone da pagina">
+            <svg id="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="#e3e3e3">
+                <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
+            </svg>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="./ong.html">Dashboard</a></li>
+                <li><a href="./ongBezerros.html">Bezerros</a></li>
+                <li><a href="./ongAdocoes.html">Adoções</a></li>
+                <li><a href="./ongBrindes.html">Brindes</a></li>
+                <li><a href="./index.html">Sair</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>Brindes cadastrados (<span id="qntd-brindes"></span>)</h2>
+        <hr>
+        <section class="lista-cards" id="lista-brindes"></section>
+    </main>
+    <script>
+        const secaoBrindes = document.querySelector("#lista-brindes");
+        const montanteBrindes = document.querySelector("#qntd-brindes")
+
+        let brindes = JSON.parse(localStorage.getItem("brindes"));
+        const qntdBrindes = brindes.length;
+
+        montanteBrindes.innerHTML = qntdBrindes;
+        brindes.forEach((brinde, index) => {
+            secaoBrindes.innerHTML +=
+                `
+                <article class="card">
+                    <img src="${brinde.urlFoto}" alt="Foto do brinde">
+                    <p class="nome-brinde">${brinde.nome} (${brinde.valor} pontos)</p>
+                    <p class="desc-brinde">${brinde.desc}</p>
+                    <p class="dono-brinde">Patrocinado por ${brinde.dono.username}</p>
+                    <button class="excluir-brinde" data-id=${index}>Excluir</button>
+                </article>  
+            `
+        });
+
+        // Escuta os botões de excluir brinde
+        const excluirBotoes = document.querySelectorAll(".excluir-brinde");
+        excluirBotoes.forEach(botao => {
+            botao.addEventListener('click', e => {
+                const index = e.target.getAttribute("data-id");
+                brindes.splice(index, 1);
+                localStorage.setItem("brindes", JSON.stringify(brindes));
+                e.target.parentElement.remove();
+            })
+        })
+    </script>
+    <script src="scripts/menu.js"></script>
+
+</body>
+
+</html>
